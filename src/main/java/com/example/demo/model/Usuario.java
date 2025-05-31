@@ -1,14 +1,21 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.UsuarioRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements UserDetails {
+
     @Id
-    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -16,20 +23,49 @@ public class Usuario {
     private String nome;
 
     @Column
-    private String email;
+    private String login;
 
     @Column
     private String senha;
 
     @Column
-    private boolean ativo;
+    private UsuarioRole role;
 
-    public Usuario(CriarUsuarioRequest criarUsuarioRequest) {
-        this.nome = criarUsuarioRequest.getNome();
-        this.email = criarUsuarioRequest.getEmail();
-        this.senha = criarUsuarioRequest.getSenha();
-        this.ativo = true;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UsuarioRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public Usuario() {}
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
