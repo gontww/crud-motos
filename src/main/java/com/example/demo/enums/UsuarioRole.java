@@ -1,16 +1,16 @@
 package com.example.demo.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UsuarioRole {
     ADMIN("admin"),
     USER("user");
 
-    private String role;
+    private final String role;
 
     UsuarioRole(String role) {
         this.role = role;
     }
 
-    public String getRole() {
-        return role;
-    }
 }

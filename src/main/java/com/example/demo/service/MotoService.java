@@ -4,6 +4,7 @@ import com.example.demo.model.Moto;
 import com.example.demo.repository.MotoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,39 +14,33 @@ import java.util.Optional;
 @Transactional
 public class MotoService {
 
-    private final MotoRepository motoRepository;
+    @Autowired
+    private MotoRepository motoRepository;
 
-    public MotoService(MotoRepository motoRepository) {
-        this.motoRepository = motoRepository;
-    }
-
-    public Moto criarMoto(Moto moto){
-//        if (moto.getEmail() == null || moto.getEmail().isEmpty()){
-//            throw new RuntimeException("é necessario um email");
-//        }
-//        if (moto.getNome() == null || moto.getNome().isEmpty()){
-//            throw new RuntimeException("é necessario um nome");
-//        }
-//        if (moto.getSenha() == null || moto.getSenha().isEmpty()){
-//            throw new RuntimeException("é necessario uma senha");
-//        }
-//
-//        Moto motoNova = new Moto(moto);
-//        return motoRepository.save(motoNova);
-        return new Moto();
-    }
-
-    public List<Moto> listar(){
+    public List<Moto> findAll() {
         return motoRepository.findAll();
     }
 
-    public Moto deletarMoto(Long id){
-        Optional<Moto> moto = motoRepository.findById(id);
-        if(moto.isEmpty()){
-            throw new EntityNotFoundException("Moto não existe");
-        }
+    public Moto findById(Long id) {
+        return motoRepository.findById(id).orElseThrow();
+    }
 
-        motoRepository.delete(moto.get());
-        return moto.get();
+    public Moto save(Moto moto) {
+        return motoRepository.save(moto);
+    }
+
+    public Moto update(Long id, Moto motoAtualizado) {
+        Moto moto = findById(id);
+        moto.setPlaca(motoAtualizado.getPlaca());
+        moto.setModelo(motoAtualizado.getModelo());
+        moto.setMarca(motoAtualizado.getMarca());
+        moto.setAno(motoAtualizado.getAno());
+        moto.setCor(motoAtualizado.getCor());
+        moto.setStatus(motoAtualizado.getStatus());
+        return motoRepository.save(moto);
+    }
+
+    public void deleteById(Long id) {
+        motoRepository.deleteById(id);
     }
 }

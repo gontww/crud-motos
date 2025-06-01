@@ -1,0 +1,140 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tables
+      author: Augusto
+      changes:
+        # Tabela Moto
+        - createTable:
+            tableName: moto
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: placa
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modelo
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: marca
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ano
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cor
+                  type: VARCHAR(30)
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+
+        # Tabela Locatario
+        - createTable:
+            tableName: locatario
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: nome
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cpf
+                  type: VARCHAR(14)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: telefone
+                  type: VARCHAR(15)
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+
+        # Tabela Usuario
+        - createTable:
+            tableName: usuario
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: nome
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: login
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: senha
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        # Tabela Aluguel
+        - createTable:
+            tableName: aluguel
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: dataInicio
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dataFim
+                  type: DATE
+              - column:
+                  name: moto_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locatario_id
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        # Adicionando chaves estrangeiras
+        - addForeignKeyConstraint:
+            constraintName: fk_moto
+            baseTableName: aluguel
+            baseColumnNames: moto_id
+            referencedTableName: moto
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_locatario
+            baseTableName: aluguel
+            baseColumnNames: locatario_id
+            referencedTableName: locatario
+            referencedColumnNames: id

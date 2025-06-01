@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-role-column-to-usuario
+      author: Augusto
+
+      changes:
+        - addColumn:
+            tableName: usuario
+            columns:
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  defaultValue: USER
+                  constraints:
+                    nullable: false

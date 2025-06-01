@@ -28,7 +28,8 @@ public class Usuario implements UserDetails {
     @Column
     private String senha;
 
-    @Column
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private UsuarioRole role;
 
     @Override

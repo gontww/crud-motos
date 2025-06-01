@@ -1,5 +1,0 @@
--- INSERT INTO usuario (nome, login, senha, papel)
---     SELECT 'Admin', 'admin', 'admin', 'ADMIN'
---         WHERE NOT EXISTS (
---         SELECT 1 FROM usuario WHERE login = 'admin'
---     );

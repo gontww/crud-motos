@@ -1,10 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
 @Entity
+@Data
 @Table(name = "aluguel")
 public class Aluguel {
 
@@ -12,16 +14,14 @@ public class Aluguel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private LocalDate dataInicio;
-
     private LocalDate dataFim;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "moto_id")
     private Moto moto;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "locatario_id")
     private Locatario locatario;
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("moto")
+@RequestMapping("/motos")
 public class MotoController {
 
     private final MotoService motoService;
@@ -16,18 +16,28 @@ public class MotoController {
         this.motoService = motoService;
     }
 
-    @PostMapping("/criar")
-        public Moto criarMoto(@RequestBody Moto moto) {
-        return motoService.criarMoto(moto);
+    @GetMapping
+    public List<Moto> findAll() {
+        return motoService.findAll();
     }
 
-    @GetMapping("/listar")
-    public List<Moto> listar() {
-        return motoService.listar();
+    @GetMapping("/{id}")
+    public Moto findById(@PathVariable Long id) {
+        return motoService.findById(id);
     }
 
-    @DeleteMapping("/excluir/{id}")
-    public Moto excluir(@PathVariable("id") Long id) {
-        return motoService.deletarMoto(id);
+    @PostMapping
+    public Moto save(@RequestBody Moto moto) {
+        return motoService.save(moto);
+    }
+
+    @PutMapping("/{id}")
+    public Moto update(@PathVariable Long id, @RequestBody Moto moto) {
+        return motoService.update(id, moto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        motoService.deleteById(id);
     }
 }
