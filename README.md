@@ -10,7 +10,7 @@ Um sistema completo de **CRUD de motos**, desenvolvido com foco em boas prática
 - 🛢️ **PostgreSQL**  
 - ✅ **SonarQube**
 
-### Frontend
+### Frontend neste link -> [crud-motos-front](https://github.com/gontww/crud-motos-front) 
 - 🌐 **Vue.js 3**  
 - 🎨 **Element UI** (framework de componentes)
 
