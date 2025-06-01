@@ -26,8 +26,8 @@ A aplicação não requer nenhuma configuração especial para ser executada, ba
 ### Pré-requisitos
 
 - [Java 21+](https://adoptopenjdk.net/)
-- [Node.js](https://nodejs.org/) (v14+)
-- [PostgreSQL](https://www.postgresql.org/) (13+)
+- [Node.js](https://nodejs.org/) (v18+)
+- [PostgreSQL](https://www.postgresql.org/) (15)
 - [Maven](https://maven.apache.org/)
 - [Vue CLI](https://cli.vuejs.org/)
 
@@ -50,7 +50,7 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-A API estará disponível em: `http://localhost:5137`
+A API estará disponível em: `http://localhost:8080`
 
 ---
 
@@ -62,13 +62,12 @@ cd frontend
 
 # Instale as dependências
 npm install
-npm run format
 
 # Execute o servidor de desenvolvimento
 npm run dev
 ```
 
-O frontend estará disponível em: `http://localhost:3000`
+O frontend estará disponível em: `http://localhost:5137`
 
 ---
 
@@ -90,31 +89,6 @@ Garanta que o SonarQube esteja rodando localmente e execute:
   -Dsonar.projectKey=cadastro-motos \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=SEU_TOKEN
-```
-
----
-
-## ✨ Funcionalidades
-
-- Cadastro de motos com campos como modelo, cor, ano
-- Validações no frontend e backend
-- Interface responsiva e intuitiva
-- Testes automatizados de ponta a ponta com Cypress
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-cadastro-motos/
-├── backend/
-│   └── src/main/java/com/example/demo
-├── frontend/
-│   └── src/
-│       └── components/
-│       └── views/
-│       └── services/
-└── README.md
 ```
 
 ---
