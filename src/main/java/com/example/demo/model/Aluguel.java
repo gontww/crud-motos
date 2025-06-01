@@ -12,9 +12,13 @@ public class Aluguel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
 
+    @Column
     private LocalDate dataInicio;
+
+    @Column
     private LocalDate dataFim;
 
     @ManyToOne
