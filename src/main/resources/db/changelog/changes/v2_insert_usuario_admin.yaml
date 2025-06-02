@@ -2,17 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: insert-admin-user
       author: Augusto
-
       changes:
-        - insert:
-            tableName: usuario
-            columns:
-              - column:
-                  name: nome
-                  value: Administrador
-              - column:
-                  name: login
-                  value: admin
-              - column:
-                  name: senha
-                  value: admin
+        - sqlFile:
+            path: ../scripts/insert_usuario_admin.sql
+            relativeToChangelogFile: true

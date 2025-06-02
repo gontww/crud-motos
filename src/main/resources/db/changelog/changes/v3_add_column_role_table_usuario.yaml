@@ -1,8 +1,8 @@
 databaseChangeLog:
   - changeSet:
-      id: create-tables
+      id: add-role-column-to-usuario
       author: Augusto
       changes:
         - sqlFile:
-            path: ../scripts/create_tables_iniciais.sql
+            path: ../scripts/add_column_role_table_usuario.sql
             relativeToChangelogFile: true
