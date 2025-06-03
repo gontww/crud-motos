@@ -26,6 +26,7 @@ public class MotoService {
     }
 
     public Moto save(Moto moto) {
+        moto.setStatus("DISPONIVEL");
         return motoRepository.save(moto);
     }
 
