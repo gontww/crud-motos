@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AluguelRequest;
 import com.example.demo.model.Aluguel;
 import com.example.demo.service.AluguelService;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,12 @@ public class AluguelController {
     }
 
     @PostMapping
-    public Aluguel save(@RequestBody Aluguel aluguel) {
+    public Aluguel save(@RequestBody AluguelRequest aluguel) {
         return aluguelService.save(aluguel);
     }
 
     @PutMapping("/{id}")
-    public Aluguel update(@PathVariable Long id, @RequestBody Aluguel aluguel) {
+    public Aluguel update(@PathVariable Long id, @RequestBody AluguelRequest aluguel) {
         return aluguelService.update(id, aluguel);
     }
 

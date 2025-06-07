@@ -2,12 +2,14 @@ package com.example.demo.service;
 
 import com.example.demo.model.Locatario;
 import com.example.demo.repository.LocatarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class LocatarioService {
 
     @Autowired

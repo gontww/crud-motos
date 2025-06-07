@@ -21,12 +21,15 @@ public class MotoService {
         return motoRepository.findAll();
     }
 
+    public List<Moto> findAllDisponiveis() {
+        return motoRepository.findAllDisponiveis();
+    }
+
     public Moto findById(Long id) {
         return motoRepository.findById(id).orElseThrow();
     }
 
     public Moto save(Moto moto) {
-        moto.setStatus("DISPONIVEL");
         return motoRepository.save(moto);
     }
 

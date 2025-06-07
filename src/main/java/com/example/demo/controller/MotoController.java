@@ -21,6 +21,11 @@ public class MotoController {
         return motoService.findAll();
     }
 
+    @GetMapping("/disponiveis")
+    public List<Moto> findAllDisponiveis() {
+        return motoService.findAllDisponiveis();
+    }
+
     @GetMapping("/{id}")
     public Moto findById(@PathVariable Long id) {
         return motoService.findById(id);
