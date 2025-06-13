@@ -8,4 +8,5 @@ import java.time.LocalDate;
 public interface AluguelRepository extends JpaRepository<Aluguel, Long> {
     List<Aluguel> findByMotoId(Long motoId);
     List<Aluguel> findByDataFimBeforeAndMotoStatus(LocalDate data, String status);
+    List<Aluguel> findByDataInicioBetween(LocalDate startDate, LocalDate endDate);
 }
