@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changes/v2_insert_usuario_admin.yaml
   - include:
       file: db/changelog/changes/v3_add_column_role_table_usuario.yaml
+  - include:
+      file: db/changelog/changes/v4_add_column_status_aluguel.yaml

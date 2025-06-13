@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-role-column-aluguel
+      author: Augusto
+      changes:
+        - sqlFile:
+            path: ../scripts/add_column_status_aluguel.sql
+            relativeToChangelogFile: true

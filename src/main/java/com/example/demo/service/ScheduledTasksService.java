@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Aluguel;
 import com.example.demo.model.Moto;
 import com.example.demo.repository.AluguelRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,6 +25,7 @@ public class ScheduledTasksService {
 
     // Executa todos os dias meia-noite
     @Scheduled(cron = "0 0 0 * * ?")
+    @PostConstruct
     @Transactional
     public void verificarAlugueisVencidos() {
         log.info("Verificando alugueis vencidos");
