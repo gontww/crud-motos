@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.enums.StatusAluguel;
 import com.example.demo.model.Aluguel;
 import com.example.demo.model.Moto;
 import com.example.demo.repository.AluguelRepository;
@@ -35,6 +36,8 @@ public class ScheduledTasksService {
         for (Aluguel aluguel : alugueisVencidos) {
             Moto moto = aluguel.getMoto();
             moto.setStatus("DISPONIVEL");
+            aluguel.setStatus(StatusAluguel.INATIVO);
+            aluguelRepository.save(aluguel);
             motoService.save(moto);
             log.info("Aluguel de id {} finalizado, moto diponivel: {}",aluguel.getId(), moto.getModelo());
         }

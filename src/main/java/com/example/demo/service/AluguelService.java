@@ -41,8 +41,8 @@ public class AluguelService {
         
         return alugueisExistentes.stream().noneMatch(aluguel -> {
             // Verifica se tem sobreposição de datas
-            return !(dataFim.isBefore(aluguel.getDataInicio()) ||
-                    dataInicio.isAfter(aluguel.getDataFim()));
+            return !(dataFim.isBefore(aluguel.getDataInicio()) || dataInicio.isAfter(aluguel.getDataFim())) &&
+                    aluguel.getStatus().equals(StatusAluguel.ATIVO);
         });
     }
 
@@ -62,6 +62,7 @@ public class AluguelService {
         aluguel.setDataFim(aluguelRequest.dataFim());
         aluguel.setMoto(moto);
         aluguel.setLocatario(locatario);
+        aluguel.setStatus(StatusAluguel.ATIVO);
         return aluguelRepository.save(aluguel);
     }
 
