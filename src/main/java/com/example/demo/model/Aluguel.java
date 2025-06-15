@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.StatusAluguel;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,4 +29,8 @@ public class Aluguel {
     @ManyToOne
     @JoinColumn(name = "locatario_id")
     private Locatario locatario;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private StatusAluguel status;
 }

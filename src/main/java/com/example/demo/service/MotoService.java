@@ -33,6 +33,11 @@ public class MotoService {
         return motoRepository.save(moto);
     }
 
+    public Moto saveNova(Moto moto) {
+        moto.setStatus("DISPONIVEL");
+        return motoRepository.save(moto);
+    }
+
     public Moto update(Long id, Moto motoAtualizado) {
         Moto moto = findById(id);
         moto.setPlaca(motoAtualizado.getPlaca());

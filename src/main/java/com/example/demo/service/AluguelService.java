@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AluguelRequest;
+import com.example.demo.enums.StatusAluguel;
 import com.example.demo.model.Aluguel;
 import com.example.demo.model.Locatario;
 import com.example.demo.model.Moto;
@@ -103,5 +104,14 @@ public class AluguelService {
         moto.setStatus("DISPONIVEL");
         motoService.save(moto);
         aluguelRepository.deleteById(id);
+    }
+
+    public Aluguel finalizar(Long id) {
+        Aluguel aluguel = findById(id);
+        Moto moto = aluguel.getMoto();
+        moto.setStatus("DISPONIVEL");
+        motoService.save(moto);
+        aluguel.setStatus(StatusAluguel.INATIVO);
+        return aluguelRepository.save(aluguel);
     }
 }

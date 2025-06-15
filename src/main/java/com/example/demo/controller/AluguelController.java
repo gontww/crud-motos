@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AluguelRequest;
 import com.example.demo.model.Aluguel;
+import com.example.demo.dto.AluguelRequest;
 import com.example.demo.service.AluguelService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +40,10 @@ public class AluguelController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         aluguelService.deleteById(id);
+    }
+
+    @GetMapping("/{id}/finalizar")
+    public Aluguel finalizar(@PathVariable Long id) {
+        return aluguelService.finalizar(id);
     }
 }

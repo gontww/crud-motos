@@ -33,7 +33,7 @@ public class MotoController {
 
     @PostMapping
     public Moto save(@RequestBody Moto moto) {
-        return motoService.save(moto);
+        return motoService.saveNova(moto);
     }
 
     @PutMapping("/{id}")
