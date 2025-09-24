@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.dto.UsuarioUpdateDTO;
+import com.example.demo.mapper.UsuarioMapper;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -23,14 +27,18 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public Usuario atualizarPerfil(String login, UsuarioUpdateDTO dto) {
+    public UsuarioDTO atualizarPerfil(String login, UsuarioUpdateDTO dto) {
         Usuario usuario = usuarioRepository.findByLogin(login)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (dto.getNome() != null) usuario.setNome(dto.getNome());
-        if (dto.getLogin() != null) usuario.setLogin(dto.getLogin());
-        if (dto.getSenha() != null) usuario.setSenha(dto.getSenha());
+        usuarioMapper.updateEntity(usuario, dto);
+        usuario = usuarioRepository.save(usuario);
+        return usuarioMapper.toDTO(usuario);
+    }
 
-        return usuarioRepository.save(usuario);
+    public UsuarioDTO buscarPerfilPorLogin(String login) {
+        Usuario usuario = usuarioRepository.findByLogin(login)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return usuarioMapper.toDTO(usuario);
     }
 } 

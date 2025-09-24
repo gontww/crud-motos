@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.MotoDTO;
+import com.example.demo.dto.MotoRequest;
+import com.example.demo.mapper.MotoMapper;
 import com.example.demo.model.Moto;
 import com.example.demo.repository.MotoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,37 +17,43 @@ public class MotoService {
 
     @Autowired
     private MotoRepository motoRepository;
+    @Autowired
+    private MotoMapper motoMapper;
 
-    public List<Moto> findAll() {
-        return motoRepository.findAll();
+    public List<MotoDTO> findAll() {
+        List<Moto> motos = motoRepository.findAll();
+        return motoMapper.toDTOList(motos);
     }
 
-    public List<Moto> findAllDisponiveis() {
-        return motoRepository.findAllDisponiveis();
+    public List<MotoDTO> findAllDisponiveis() {
+        List<Moto> motos = motoRepository.findAllDisponiveis();
+        return motoMapper.toDTOList(motos);
     }
 
-    public Moto findById(Long id) {
+    public MotoDTO findById(Long id) {
+        Moto moto = motoRepository.findById(id).orElseThrow();
+        return motoMapper.toDTO(moto);
+    }
+
+    public Moto findEntityById(Long id) {
         return motoRepository.findById(id).orElseThrow();
     }
 
-    public Moto save(Moto moto) {
+    public Moto saveEntity(Moto moto) {
         return motoRepository.save(moto);
     }
 
-    public Moto saveNova(Moto moto) {
-        moto.setStatus("DISPONIVEL");
-        return motoRepository.save(moto);
+    public MotoDTO saveNova(MotoRequest request) {
+        Moto moto = motoMapper.toEntity(request);
+        moto = motoRepository.save(moto);
+        return motoMapper.toDTO(moto);
     }
 
-    public Moto update(Long id, Moto motoAtualizado) {
-        Moto moto = findById(id);
-        moto.setPlaca(motoAtualizado.getPlaca());
-        moto.setModelo(motoAtualizado.getModelo());
-        moto.setMarca(motoAtualizado.getMarca());
-        moto.setAno(motoAtualizado.getAno());
-        moto.setCor(motoAtualizado.getCor());
-        moto.setStatus(motoAtualizado.getStatus());
-        return motoRepository.save(moto);
+    public MotoDTO update(Long id, MotoRequest request) {
+        Moto moto = findEntityById(id);
+        motoMapper.updateEntity(moto, request);
+        moto = motoRepository.save(moto);
+        return motoMapper.toDTO(moto);
     }
 
     public void deleteById(Long id) {

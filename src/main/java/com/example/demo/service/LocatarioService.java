@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.LocatarioDTO;
+import com.example.demo.dto.LocatarioRequest;
+import com.example.demo.mapper.LocatarioMapper;
 import com.example.demo.model.Locatario;
 import com.example.demo.repository.LocatarioRepository;
 import jakarta.transaction.Transactional;
@@ -14,31 +17,37 @@ public class LocatarioService {
 
     @Autowired
     private LocatarioRepository locatarioRepository;
+    @Autowired
+    private LocatarioMapper locatarioMapper;
 
-    public List<Locatario> findAll() {
-        return locatarioRepository.findAll();
+    public List<LocatarioDTO> findAll() {
+        List<Locatario> locatarios = locatarioRepository.findAll();
+        return locatarioMapper.toDTOList(locatarios);
     }
 
-    public Locatario findById(Long id) {
+    public LocatarioDTO findById(Long id) {
+        Locatario locatario = locatarioRepository.findById(id).orElseThrow();
+        return locatarioMapper.toDTO(locatario);
+    }
+
+    public Locatario findEntityById(Long id) {
         return locatarioRepository.findById(id).orElseThrow();
     }
 
-    public Locatario save(Locatario locatario) {
-        if (locatarioRepository.existsByCpf(locatario.getCpf())) {
+    public LocatarioDTO save(LocatarioRequest request) {
+        if (locatarioRepository.existsByCpf(request.cpf())) {
             throw new RuntimeException("CPF já cadastrado.");
         }
-        return locatarioRepository.save(locatario);
+        Locatario locatario = locatarioMapper.toEntity(request);
+        locatario = locatarioRepository.save(locatario);
+        return locatarioMapper.toDTO(locatario);
     }
 
-    public Locatario update(Long id, Locatario locatarioAtualizado) {
-        Locatario locatario = findById(id);
-
-        locatario.setNome(locatarioAtualizado.getNome());
-        locatario.setCpf(locatarioAtualizado.getCpf());
-        locatario.setEmail(locatarioAtualizado.getEmail());
-        locatario.setTelefone(locatarioAtualizado.getTelefone());
-
-        return locatarioRepository.save(locatario);
+    public LocatarioDTO update(Long id, LocatarioRequest request) {
+        Locatario locatario = findEntityById(id);
+        locatarioMapper.updateEntity(locatario, request);
+        locatario = locatarioRepository.save(locatario);
+        return locatarioMapper.toDTO(locatario);
     }
 
     public void deleteById(Long id) {

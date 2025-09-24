@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Aluguel;
+import com.example.demo.dto.AluguelDTO;
 import com.example.demo.dto.AluguelRequest;
 import com.example.demo.service.AluguelService;
 import org.springframework.web.bind.annotation.*;
@@ -18,22 +18,22 @@ public class AluguelController {
     }
 
     @GetMapping
-    public List<Aluguel> findAll() {
+    public List<AluguelDTO> findAll() {
         return aluguelService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Aluguel findById(@PathVariable Long id) {
+    public AluguelDTO findById(@PathVariable Long id) {
         return aluguelService.findById(id);
     }
 
     @PostMapping
-    public Aluguel save(@RequestBody AluguelRequest aluguel) {
+    public AluguelDTO save(@RequestBody AluguelRequest aluguel) {
         return aluguelService.save(aluguel);
     }
 
     @PutMapping("/{id}")
-    public Aluguel update(@PathVariable Long id, @RequestBody AluguelRequest aluguel) {
+    public AluguelDTO update(@PathVariable Long id, @RequestBody AluguelRequest aluguel) {
         return aluguelService.update(id, aluguel);
     }
 
@@ -43,7 +43,7 @@ public class AluguelController {
     }
 
     @GetMapping("/{id}/finalizar")
-    public Aluguel finalizar(@PathVariable Long id) {
+    public AluguelDTO finalizar(@PathVariable Long id) {
         return aluguelService.finalizar(id);
     }
 }

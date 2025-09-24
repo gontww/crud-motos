@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Moto;
+import com.example.demo.dto.MotoDTO;
+import com.example.demo.dto.MotoRequest;
 import com.example.demo.service.MotoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,27 +18,27 @@ public class MotoController {
     }
 
     @GetMapping
-    public List<Moto> findAll() {
+    public List<MotoDTO> findAll() {
         return motoService.findAll();
     }
 
     @GetMapping("/disponiveis")
-    public List<Moto> findAllDisponiveis() {
+    public List<MotoDTO> findAllDisponiveis() {
         return motoService.findAllDisponiveis();
     }
 
     @GetMapping("/{id}")
-    public Moto findById(@PathVariable Long id) {
+    public MotoDTO findById(@PathVariable Long id) {
         return motoService.findById(id);
     }
 
     @PostMapping
-    public Moto save(@RequestBody Moto moto) {
+    public MotoDTO save(@RequestBody MotoRequest moto) {
         return motoService.saveNova(moto);
     }
 
     @PutMapping("/{id}")
-    public Moto update(@PathVariable Long id, @RequestBody Moto moto) {
+    public MotoDTO update(@PathVariable Long id, @RequestBody MotoRequest moto) {
         return motoService.update(id, moto);
     }
 

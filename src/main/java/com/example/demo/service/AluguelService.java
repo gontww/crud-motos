@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AluguelDTO;
 import com.example.demo.dto.AluguelRequest;
 import com.example.demo.enums.StatusAluguel;
+import com.example.demo.mapper.AluguelMapper;
 import com.example.demo.model.Aluguel;
 import com.example.demo.model.Locatario;
 import com.example.demo.model.Moto;
@@ -23,12 +25,21 @@ public class AluguelService {
     private MotoService motoService;
     @Autowired
     private LocatarioService locatarioService;
+    @Autowired
+    private AluguelMapper aluguelMapper;
 
-    public List<Aluguel> findAll() {
-        return aluguelRepository.findAll();
+    public List<AluguelDTO> findAll() {
+        List<Aluguel> alugueis = aluguelRepository.findAll();
+        return aluguelMapper.toDTOList(alugueis);
     }
 
-    public Aluguel findById(Long id) {
+    public AluguelDTO findById(Long id) {
+        Aluguel aluguel = aluguelRepository.findById(id).orElseThrow();
+        return aluguelMapper.toDTO(aluguel);
+    }
+
+    // Método interno para buscar entidade (usado pelos outros métodos)
+    private Aluguel findEntityById(Long id) {
         return aluguelRepository.findById(id).orElseThrow();
     }
 
@@ -46,30 +57,26 @@ public class AluguelService {
         });
     }
 
-    public Aluguel save(AluguelRequest aluguelRequest) {
-        Moto moto = motoService.findById(aluguelRequest.motoId());
-        Locatario locatario = locatarioService.findById(aluguelRequest.locatarioId());
+    public AluguelDTO save(AluguelRequest aluguelRequest) {
+        Moto moto = motoService.findEntityById(aluguelRequest.motoId());
+        Locatario locatario = locatarioService.findEntityById(aluguelRequest.locatarioId());
 
         if (!isMotoDisponivelNoPeriodo(moto, aluguelRequest.dataInicio(), aluguelRequest.dataFim())) {
             throw new RuntimeException("A moto não está disponível no período solicitado.");
         }
 
         moto.setStatus("INDISPONIVEL");
-        moto = motoService.save(moto);
+        moto = motoService.saveEntity(moto);
 
-        Aluguel aluguel = new Aluguel();
-        aluguel.setDataInicio(aluguelRequest.dataInicio());
-        aluguel.setDataFim(aluguelRequest.dataFim());
-        aluguel.setMoto(moto);
-        aluguel.setLocatario(locatario);
-        aluguel.setStatus(StatusAluguel.ATIVO);
-        return aluguelRepository.save(aluguel);
+        Aluguel aluguel = aluguelMapper.toEntity(aluguelRequest, moto, locatario);
+        aluguel = aluguelRepository.save(aluguel);
+        return aluguelMapper.toDTO(aluguel);
     }
 
-    public Aluguel update(Long id, AluguelRequest aluguelAtualizadoRequest) {
-        Aluguel aluguel = findById(id);
-        Moto novaMoto = motoService.findById(aluguelAtualizadoRequest.motoId());
-        Locatario locatario = locatarioService.findById(aluguelAtualizadoRequest.locatarioId());
+    public AluguelDTO update(Long id, AluguelRequest aluguelAtualizadoRequest) {
+        Aluguel aluguel = findEntityById(id);
+        Moto novaMoto = motoService.findEntityById(aluguelAtualizadoRequest.motoId());
+        Locatario locatario = locatarioService.findEntityById(aluguelAtualizadoRequest.locatarioId());
         LocalDate dataInicio = aluguelAtualizadoRequest.dataInicio();
         LocalDate dataFim = aluguelAtualizadoRequest.dataFim();
         
@@ -86,33 +93,35 @@ public class AluguelService {
 
             Moto motoAnterior = aluguel.getMoto();
             motoAnterior.setStatus("DISPONIVEL");
-            motoService.save(motoAnterior);
+            motoService.saveEntity(motoAnterior);
 
             novaMoto.setStatus("INDISPONIVEL");
-            novaMoto = motoService.save(novaMoto);
+            novaMoto = motoService.saveEntity(novaMoto);
         }
 
         aluguel.setDataInicio(dataInicio);
         aluguel.setDataFim(dataFim);
         aluguel.setMoto(novaMoto);
         aluguel.setLocatario(locatario);
-        return aluguelRepository.save(aluguel);
+        aluguel = aluguelRepository.save(aluguel);
+        return aluguelMapper.toDTO(aluguel);
     }
 
     public void deleteById(Long id) {
-        Aluguel aluguel = findById(id);
+        Aluguel aluguel = findEntityById(id);
         Moto moto = aluguel.getMoto();
         moto.setStatus("DISPONIVEL");
-        motoService.save(moto);
+        motoService.saveEntity(moto);
         aluguelRepository.deleteById(id);
     }
 
-    public Aluguel finalizar(Long id) {
-        Aluguel aluguel = findById(id);
+    public AluguelDTO finalizar(Long id) {
+        Aluguel aluguel = findEntityById(id);
         Moto moto = aluguel.getMoto();
         moto.setStatus("DISPONIVEL");
-        motoService.save(moto);
+        motoService.saveEntity(moto);
         aluguel.setStatus(StatusAluguel.INATIVO);
-        return aluguelRepository.save(aluguel);
+        aluguel = aluguelRepository.save(aluguel);
+        return aluguelMapper.toDTO(aluguel);
     }
 }

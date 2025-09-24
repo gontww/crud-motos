@@ -38,7 +38,7 @@ public class ScheduledTasksService {
             moto.setStatus("DISPONIVEL");
             aluguel.setStatus(StatusAluguel.INATIVO);
             aluguelRepository.save(aluguel);
-            motoService.save(moto);
+            motoService.saveEntity(moto);
             log.info("Aluguel de id {} finalizado, moto diponivel: {}",aluguel.getId(), moto.getModelo());
         }
     }

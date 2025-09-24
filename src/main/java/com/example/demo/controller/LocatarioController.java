@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Locatario;
+import com.example.demo.dto.LocatarioDTO;
+import com.example.demo.dto.LocatarioRequest;
 import com.example.demo.service.LocatarioService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,22 +17,22 @@ public class LocatarioController {
     }
 
     @GetMapping
-    public List<Locatario> findAll() {
+    public List<LocatarioDTO> findAll() {
         return locatarioService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Locatario findById(@PathVariable Long id) {
+    public LocatarioDTO findById(@PathVariable Long id) {
         return locatarioService.findById(id);
     }
 
     @PostMapping
-    public Locatario save(@RequestBody Locatario locatario) {
+    public LocatarioDTO save(@RequestBody LocatarioRequest locatario) {
         return locatarioService.save(locatario);
     }
 
     @PutMapping("/{id}")
-    public Locatario update(@PathVariable Long id, @RequestBody Locatario locatario) {
+    public LocatarioDTO update(@PathVariable Long id, @RequestBody LocatarioRequest locatario) {
         return locatarioService.update(id, locatario);
     }
 
